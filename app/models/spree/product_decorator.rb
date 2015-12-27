@@ -113,9 +113,8 @@ module Spree
         end
 
         # facets
-        facets = {
-          price: { statistical: { field: "price" } },
-          properties: { terms: { field: "properties", order: "count", size: 1000000 } },
+        aggregations = {
+          price: { stats: { field: "price" } },
           taxon_ids: { terms: { field: "taxon_ids", size: 1000000 } }
         }
 
@@ -125,7 +124,7 @@ module Spree
           query: { filtered: {} },
           sort: sorting,
           from: from,
-          facets: facets
+          aggregations: aggregations
         }
 
         # add query and filters to filtered

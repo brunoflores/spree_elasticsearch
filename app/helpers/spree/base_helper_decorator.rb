@@ -7,12 +7,12 @@ module Spree
       # first step is to build a hash
       # {"property_name" => [{"term" => "value1", "count" => 1},{"term" => "value2", "count" => 1}]}}
       property_names = {}
-      facet["terms"].each do |term|
-        t = term["term"].split("||")
+      facet["buckets"].each do |term|
+        t = term["key"].split("||")
         property_name = t[0]
         property_value = t[1]
         # add a search_term to each term hash to allow searching on the element later on
-        property = {"term" => property_value, "count" => term["count"], "search_term" => term["term"]}
+        property = {"term" => property_value, "count" => term["doc_count"], "search_term" => term["key"]}
         if property_names.has_key?(property_name)
           property_names[property_name] << property
         else
@@ -27,7 +27,7 @@ module Spree
         value.sort_by!{|h| [-h["count"],h["term"].downcase]} # first sort on desc, then on term asc
         # result << Spree::Search::Elasticsearch::Facet.new(name: key, search_name: facet.name, type: facet.type, body: {"terms" => value})
         result[key] = {
-          '_type' => facet['_type'],
+          '_type' => 'terms',
           'terms' => value
         }
       end

@@ -115,6 +115,7 @@ module Spree
         # facets
         aggregations = {
           price: { stats: { field: "price" } },
+          properties: { terms: { field: "properties", order: { _count: "desc" }, size: 1000000 } },
           taxon_ids: { terms: { field: "taxon_ids", size: 1000000 } }
         }
 

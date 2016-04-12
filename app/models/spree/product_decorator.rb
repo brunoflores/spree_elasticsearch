@@ -148,7 +148,7 @@ module Spree
     private
 
     def property_list
-      product_properties.map{|pp| "#{pp.property.name}||#{pp.value}"}
+      product_properties.map{|pp| "#{pp.property.presentation}||#{pp.property_value.presentation}"}
     end
   end
 end
